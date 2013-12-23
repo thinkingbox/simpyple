@@ -1,6 +1,3 @@
-import simpy
-
-
 class Line(object):
     # y = s * x + k
     # s = (y1 - yo) / (x1 - x0)
