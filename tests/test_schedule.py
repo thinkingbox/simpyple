@@ -1,7 +1,7 @@
 from collections import namedtuple
 from nose.tools import eq_, assert_almost_equal
 
-import schedule
+from simpy.schedule import Line, Schedule
 
 
 Point = namedtuple("Point", ["x", "y"])
@@ -11,12 +11,12 @@ class TestLine(object):
     def test_known_points(self):
         p0 = Point(1.25, 12)
         p1 = Point(-0.3, 4)
-        l = schedule.Line(p0.x, p0.y, p1.x, p1.y)
+        l = Line(p0.x, p0.y, p1.x, p1.y)
         eq_(p0.y, l.value(p0.x))
         eq_(p1.y, l.value(p1.x))
 
     def test_float_values_are_insensitive_to_initial_int_points(self):
-        l = schedule.Line(1, 0, 3, 1)
+        l = Line(1, 0, 3, 1)
         eq_(0.5, l.value(2))
 
 
@@ -27,7 +27,7 @@ class TestSchedule(object):
     FULL_LOAD_DELAY = 0.5
     TOTAL_QUANTITY = RAMP_QUANTITY * 2 + FULL_LOAD_QUANTITY
     def setup(self):
-        self.schedule = schedule.Schedule(self.RAMP_QUANTITY, self.FULL_LOAD_QUANTITY, self.INITIAL_DELAY, self.FULL_LOAD_DELAY)
+        self.schedule = Schedule(self.RAMP_QUANTITY, self.FULL_LOAD_QUANTITY, self.INITIAL_DELAY, self.FULL_LOAD_DELAY)
         self.values = [self.schedule.next(index) for index in range(self.TOTAL_QUANTITY)]
 
     def _ramp_up(self):
