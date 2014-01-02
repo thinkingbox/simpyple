@@ -1,7 +1,7 @@
 from collections import namedtuple
 from nose.tools import eq_, assert_almost_equal
 
-from simpy.schedule import Line, Schedule
+from simpyple.schedule import Line, Schedule
 
 
 Point = namedtuple("Point", ["x", "y"])
