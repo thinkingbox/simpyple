@@ -43,6 +43,6 @@ class TestSchedule(object):
         assert_almost_equal(self._ramp_up(), self.schedule.ramp_up)
         assert_almost_equal(self.schedule.ramp_up + self.schedule.full_load, self.schedule.ramp_down)
         for i in range(self.RAMP_QUANTITY - 1):
-            assert_almost_equal(self.values[self.RAMP_QUANTITY - i - 1] - self.values[self.RAMP_QUANTITY - i - 2], self.values[self.RAMP_QUANTITY + self.FULL_LOAD_QUANTITY + i] - self.values[self.RAMP_QUANTITY + self.FULL_LOAD_QUANTITY + i - 1], msg="i={}".format(i))
+            assert_almost_equal(self.values[self.RAMP_QUANTITY - i - 1] - self.values[self.RAMP_QUANTITY - i - 2], self.values[self.RAMP_QUANTITY + self.FULL_LOAD_QUANTITY + i] - self.values[self.RAMP_QUANTITY + self.FULL_LOAD_QUANTITY + i - 1], msg="index={}".format(i))
 
     # TODO: show that it increments by 0.05 at each ramp step + show a simpler profile

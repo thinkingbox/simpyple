@@ -31,7 +31,6 @@ class Schedule(object):
             self.full_load = self.time + delay
         else:
             displacement = float(self.initial_delay - self.full_load_delay) / self.ramp_quantity
-            #delay = Line(self.ramp_quantity + self.full_load_quantity, self.full_load_delay + float(self.initial_delay - self.full_load_delay) / self.ramp_quantity, self.ramp_quantity * 2 + self.full_load_quantity, self.initial_delay + float(self.initial_delay - self.full_load_delay) / self.ramp_quantity).value(index)
             delay = displacement + Line(self.ramp_quantity + self.full_load_quantity, self.full_load_delay, self.ramp_quantity * 2 + self.full_load_quantity, self.initial_delay).value(index)
             self.ramp_down = self.time + delay
         self.time += delay
