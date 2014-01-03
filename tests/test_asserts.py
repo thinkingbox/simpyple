@@ -7,6 +7,10 @@ class TestAsserts(object):
         assert_list_pairs_have_same_relative_distance([1, 3], [5, 7])
         assert_list_pairs_have_same_relative_distance([1, 2, 4, 7, 11], [5, 6, 8, 11, 15])
 
+    def test_assert_list_pairs_have_same_relative_distance_considers_absolute_distance(self):
+        assert_list_pairs_have_same_relative_distance([1, 3], [7, 5])
+        assert_list_pairs_have_same_relative_distance([1, 2, 4, 7, 11], [5, 6, 4, 7, 3])
+
     def test_assert_list_pairs_have_same_relative_distance_does_not_verifies_anything_for_degenerate_cases(self):
         assert_list_pairs_have_same_relative_distance([], [])
         assert_list_pairs_have_same_relative_distance([1], [None])

@@ -2,6 +2,7 @@ from collections import namedtuple
 from nose.tools import eq_, assert_almost_equal
 
 from simpyple.schedule import Line, Schedule
+from simpyple.tests.asserts import assert_list_pairs_have_same_relative_distance
 
 
 Point = namedtuple("Point", ["x", "y"])
@@ -30,10 +31,10 @@ class TestSchedule(object):
     def setup(self):
         self.schedule = Schedule(RAMP_QUANTITY, FULL_LOAD_QUANTITY, INITIAL_DELAY, FULL_LOAD_DELAY)
         self.values = [self.schedule.next(index) for index in range(TOTAL_QUANTITY)]
+        self.delay_increment = (INITIAL_DELAY - FULL_LOAD_DELAY) / RAMP_QUANTITY
 
     def _ramp_up(self):
-        delay_increment = (INITIAL_DELAY - FULL_LOAD_DELAY) / RAMP_QUANTITY
-        return sum(INITIAL_DELAY - i * delay_increment for i in range(RAMP_QUANTITY))
+        return sum(INITIAL_DELAY - i * self.delay_increment for i in range(RAMP_QUANTITY))
 
     def test_full_load_after_ramp_up_shows_constant_rate(self):
         assert_almost_equal(FULL_LOAD_QUANTITY * FULL_LOAD_DELAY, self.schedule.full_load - self.schedule.ramp_up)
@@ -43,7 +44,17 @@ class TestSchedule(object):
     def test_ramp_up_and_ramp_down_are_anti_symmetrical(self):
         assert_almost_equal(self._ramp_up(), self.schedule.ramp_up)
         assert_almost_equal(self.schedule.ramp_up + self.schedule.full_load, self.schedule.ramp_down)
-        for i in range(RAMP_QUANTITY - 1):
-            assert_almost_equal(self.values[RAMP_QUANTITY - i - 1] - self.values[RAMP_QUANTITY - i - 2], self.values[RAMP_QUANTITY + FULL_LOAD_QUANTITY + i] - self.values[RAMP_QUANTITY + FULL_LOAD_QUANTITY + i - 1], msg="index={}".format(i))
+        ramp_up_values = self.values[:RAMP_QUANTITY]
+        ramp_down_values = self.values[RAMP_QUANTITY + FULL_LOAD_QUANTITY - 1:TOTAL_QUANTITY - 1]
+        ramp_down_values.reverse()
+        assert_list_pairs_have_same_relative_distance(ramp_up_values, ramp_down_values)
 
-    # TODO: show that it increments by 0.05 at each ramp step + show a simpler profile
+    def test_first_and_last_values_happen_after_initial_delay(self):
+        eq_(INITIAL_DELAY, self.values[0])
+        eq_(INITIAL_DELAY, self.values[-1] - self.values[-2])
+
+    def test_delays_decrement_linearly_during_ramp_up_until_full_load_delay(self):
+        distance = INITIAL_DELAY
+        for i in range(1, RAMP_QUANTITY):
+            assert_almost_equal(distance - self.delay_increment, self.values[i] - self.values[i - 1])
+            distance -= self.delay_increment
