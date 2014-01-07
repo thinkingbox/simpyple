@@ -1,7 +1,4 @@
 class Line(object):
-    # y = s * x + k
-    # s = (y1 - yo) / (x1 - x0)
-    # k = y0 - s * x0
     def __init__(self, x0, y0, x1, y1):
         self.x0 = x0
         self.y0 = y0
@@ -20,6 +17,7 @@ class Schedule(object):
         self.full_load_quantity = full_load_quantity
         self.initial_delay = initial_delay
         self.full_load_delay = full_load_delay
+        self.quantity_profile = 2 * ramp_quantity + full_load_quantity
         self.time = 0
 
     def next(self, index):
@@ -29,9 +27,14 @@ class Schedule(object):
         elif index in range(self.ramp_quantity, self.ramp_quantity + self.full_load_quantity):
             delay = self.full_load_delay
             self.full_load = self.time + delay
-        elif index in range(self.ramp_quantity + self.full_load_quantity, 2 * self.ramp_quantity + self.full_load_quantity):
+        elif index in range(self.ramp_quantity + self.full_load_quantity, self.quantity_profile):
             displacement = float(self.initial_delay - self.full_load_delay) / self.ramp_quantity
-            delay = displacement + Line(self.ramp_quantity + self.full_load_quantity, self.full_load_delay, self.ramp_quantity * 2 + self.full_load_quantity, self.initial_delay).value(index)
+            delay = displacement + Line(
+                self.ramp_quantity + self.full_load_quantity, 
+                self.full_load_delay, 
+                self.quantity_profile, 
+                self.initial_delay
+            ).value(index)
             self.ramp_down = self.time + delay
         else:
             delay = self.initial_delay
@@ -40,5 +43,12 @@ class Schedule(object):
     
     def __str__(self):
         return "Schedule({}, {}, {}, {}), ramp_up={}, full_load={}, ramp_down={}, time={}".format(
-            self.ramp_quantity, self.full_load_quantity, self.initial_delay, self.full_load_delay, self.ramp_up, self.full_load, self.ramp_down, self.time
+            self.ramp_quantity, 
+            self.full_load_quantity, 
+            self.initial_delay, 
+            self.full_load_delay, 
+            self.ramp_up, 
+            self.full_load, 
+            self.ramp_down, 
+            self.time
         )
