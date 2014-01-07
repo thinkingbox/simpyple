@@ -58,3 +58,11 @@ class TestSchedule(object):
         for i in range(1, RAMP_QUANTITY):
             assert_almost_equal(distance - self.delay_increment, self.values[i] - self.values[i - 1])
             distance -= self.delay_increment
+
+    def test_values_after_total_quantity_keep_arriving_at_initial_delay_intervals(self):
+        current_value = self.values[-1]
+        for index in range(TOTAL_QUANTITY, TOTAL_QUANTITY + 5):
+            new_value = self.schedule.next(index)
+            assert_almost_equal(INITIAL_DELAY, new_value - current_value)
+            current_value = new_value
+

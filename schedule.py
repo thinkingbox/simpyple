@@ -23,16 +23,18 @@ class Schedule(object):
         self.time = 0
 
     def next(self, index):
-        if 0 <= index and index < self.ramp_quantity:
+        if index in range(self.ramp_quantity):
             delay = Line(0, self.initial_delay, self.ramp_quantity, self.full_load_delay).value(index)
             self.ramp_up = self.time + delay
-        elif self.ramp_quantity <= index and index < self.ramp_quantity + self.full_load_quantity:
+        elif index in range(self.ramp_quantity, self.ramp_quantity + self.full_load_quantity):
             delay = self.full_load_delay
             self.full_load = self.time + delay
-        else:
+        elif index in range(self.ramp_quantity + self.full_load_quantity, 2 * self.ramp_quantity + self.full_load_quantity):
             displacement = float(self.initial_delay - self.full_load_delay) / self.ramp_quantity
             delay = displacement + Line(self.ramp_quantity + self.full_load_quantity, self.full_load_delay, self.ramp_quantity * 2 + self.full_load_quantity, self.initial_delay).value(index)
             self.ramp_down = self.time + delay
+        else:
+            delay = self.initial_delay
         self.time += delay
         return self.time
     
