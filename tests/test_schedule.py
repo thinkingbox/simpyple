@@ -27,6 +27,7 @@ INITIAL_DELAY = 1
 FULL_LOAD_DELAY = 0.5
 TOTAL_QUANTITY = RAMP_QUANTITY * 2 + FULL_LOAD_QUANTITY
 
+
 class TestSchedule(object):
     def setup(self):
         self.schedule = Schedule(RAMP_QUANTITY, FULL_LOAD_QUANTITY, INITIAL_DELAY, FULL_LOAD_DELAY)

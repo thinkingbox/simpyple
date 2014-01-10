@@ -1,6 +1,8 @@
 from nose.tools import raises, assert_raises_regexp
 
+
 from asserts import assert_list_pairs_have_same_relative_distance
+
 
 class TestAsserts(object):
     def test_assert_list_pairs_have_same_relative_distance_verifies_relative_distance_of_pairs_in_same_position(self):
