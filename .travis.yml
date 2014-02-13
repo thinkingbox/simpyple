@@ -7,5 +7,5 @@ install:
   - pip install -r requirements-dev.txt
 # command to run tests, e.g. python setup.py test
 script: 
-  - pep8 --ignore=W293,W291,W391
+  - pep8
   - nosetests
