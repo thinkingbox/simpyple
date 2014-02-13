@@ -5,3 +5,5 @@ A bunch of utilities and convenience methods for [simpy](http://simpy.readthedoc
 
 Elements:
 * Schedule
+
+Build status: [![Build Status](https://travis-ci.org/thinkingbox/simpyple.png?branch=master)](https://travis-ci.org/thinkingbox/simpyple) 
