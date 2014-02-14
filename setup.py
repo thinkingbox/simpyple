@@ -11,11 +11,16 @@ def read_first_line(file_name):
     with open(os.path.join(os.path.dirname(__file__), file_name)) as f:
         return f.readline().strip()
  
-# Parse the base requirements file in to a list, leaving out comment and options lines
 invalid = re.compile("\s*(#|--|\s+$)")
-REQUIREMENTS = [
-    dep.strip() for dep in open('requirements.txt').readlines() if not invalid.match(dep.strip)
-]
+
+
+def read_dependencies(file_name):
+    return [
+        dep.strip() for dep in open(file_name).readlines() if not invalid.match(dep.strip())
+    ]
+
+REQUIREMENTS = read_dependencies('requirements.txt')
+TEST_REQUIREMENTS = read_dependencies('requirements-dev.txt')
 
 setup(
     name='simpyple',
@@ -35,13 +40,16 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Topic :: Scientific/Engineering'
     ],
-    keywords='',
+    keywords='simpy simulation',
     author='Piergiuliano Bossi',
     author_email='',
-    url='',
+    url='https://github.com/thinkingbox/simpyple',
     license='',
+    package_dir={'simpyple': ''},
     packages=['simpyple'],
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
+    test_suite='nose.collector',
+    tests_require=TEST_REQUIREMENTS
 )
