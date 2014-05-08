@@ -45,7 +45,7 @@ setup(
     author_email='',
     url='https://github.com/thinkingbox/simpyple',
     license='',
-    package_dir={'simpyple': ''},
+#    package_dir={'simpyple': '.'},
     packages=['simpyple'],
     include_package_data=True,
     zip_safe=False,

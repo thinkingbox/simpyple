@@ -2,7 +2,7 @@ from collections import namedtuple
 from nose.tools import eq_, assert_almost_equal
 
 from simpyple.schedule import Line, Schedule
-from simpyple.tests.asserts import assert_list_pairs_have_same_relative_distance
+from tests.asserts import assert_list_pairs_have_same_relative_distance
 
 
 Point = namedtuple("Point", ["x", "y"])
